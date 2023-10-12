@@ -29,24 +29,15 @@ public class EJCRaftController implements ChangeRequestApi {
     }
     Map<String, List<String>> body = getInfoService.getInfo(requestBody);
 
-    System.out.println("******** RESPONSE FROM JIRA API ********");
-    System.out.println(body.toString());
-
-    // getting Jira titles and numbers
-    System.out.println(body.keySet());
+    // split up Jira response into summary and description
     Set<String> keySet = body.keySet();
-
     StringBuilder jiraTitles = new StringBuilder();
     StringBuilder jiraDesc = new StringBuilder();
 
     for (String key : keySet) {
-      System.out.println(key);
-      System.out.println(body.get(key).get(0)); // 0 is the title of the Jira's
-      jiraTitles.append(body.get(key).get(0)).append(", ");
-      jiraDesc.append(body.get(key).get(1)).append(": ");
+      jiraTitles.append(body.get(key).get(0)).append(", "); // 0 is the title of the Jira's
+      jiraDesc.append(body.get(key).get(1)).append(": "); // 1 is the description
     }
-    System.out.println("***** JIRA TITLES *****");
-    System.out.println(jiraTitles);
 
     // Call ChatGPT
     // use output of summary and description to send to ChatGPT to generate summary
@@ -58,14 +49,11 @@ public class EJCRaftController implements ChangeRequestApi {
                 + jiraTitles);
 
     // Call CHAT GPT to generate a summary of all the Jira descriptions
-    System.out.println("***** JIRA DESCRIPTIONS *****");
-    System.out.println(jiraDesc);
-
     String openAIDescResponse =
         openAIService.generateSummary(
             "Summarize these Jira"
                 + " descriptions in a way a non-technical person would understand "
-                + "into a single paragraph: "
+                + "into a single paragraph (without using the words Jira or description): "
                 + jiraDesc);
 
     ChangeRequest changeRequest = new ChangeRequest();
