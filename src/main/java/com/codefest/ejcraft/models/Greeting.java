@@ -1,6 +1,7 @@
-package com.codefest.ejcraft.model;
+package com.codefest.ejcraft.models;
 
 import java.io.Serializable;
+import java.util.List;
 
 /*
 Lombok getter setter not working with jdk 21, using old-fashioned getter and setter for now
