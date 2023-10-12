@@ -1,13 +1,11 @@
-package com.codefest.cntrlfreaks;
+package com.codefest.ejcraft;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class CntrlFreaksApplicationTests {
+class EJCRaftApplicationTests {
 
-    @Test
-    void contextLoads() {
-    }
-
+  @Test
+  void contextLoads() {}
 }

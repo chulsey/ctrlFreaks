@@ -1,0 +1,52 @@
+openapi: 3.0.3
+info:
+  title: EJCRaft
+  description: EJCRaft takes Jira stories and create a CR(Change Request)
+  version: 1.0.0
+servers:
+  - url: 'https'
+paths:
+  /changeRequest:
+    post:
+      summary: Creates a change request from Jira stories
+      description: Takes in a list of Jira stories, pulls the titles and descriptions from Jira, uses AI to generate a summary and description for the change request.
+      operationId: startChangeRequest
+      tags:
+        - Change Request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                type: string
+                description: Jira Story Id
+      responses:
+        200:
+          description: A Change Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChangeRequest"
+        default:
+          description: Something didn't work
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Error
+                properties:
+                  message:
+                    type: string
+                    description: Error message
+components:
+  schemas:
+    ChangeRequest:
+      description: A Change Request
+      type: object
+      properties:
+        summary:
+          type: string
+          description: A short description for the change request
+        description:
+          type: string
+          description: A long description for a change request
