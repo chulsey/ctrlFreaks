@@ -44,7 +44,7 @@ public class EJCRaftController implements ChangeRequestApi {
     String openAISummaryResponse =
         openAIService.generateSummary(
             "Summarize these Jira titles"
-                + "in a way that a non-technical person would understand for a release explanation"
+                + "in a way that a five year old would understand for a release explanation"
                 + "in a single sentence "
                 + jiraTitles);
 
@@ -52,8 +52,9 @@ public class EJCRaftController implements ChangeRequestApi {
     String openAIDescResponse =
         openAIService.generateSummary(
             "Summarize these Jira"
-                + " descriptions in a way a non-technical person would understand "
-                + "into a single paragraph (without using the words Jira or description): "
+                + " descriptions in a way a 5 year old would understand "
+                + "into a single paragraph (without using the words Jira, description, " +
+                    "and 'as a customer'): "
                 + jiraDesc);
 
     ChangeRequest changeRequest = new ChangeRequest();

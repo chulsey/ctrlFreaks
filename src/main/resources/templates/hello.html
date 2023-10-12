@@ -3,9 +3,85 @@
 <head>
     <title>EJ-CRaft</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #333; /* Dark sheet-metal grey */
+            color: black;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        #banner {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #ffd700; /* Gold */
+            text-shadow: 2px 2px 2px #000; /* Text shadow effect */
+            margin-bottom: 20px;
+        }
+
+        a {
+            color: #ffd700; /* Gold */
+        }
+
+        h2 {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: black;
+            margin-bottom: 20px;
+        }
+
+        .text-box {
+            padding: 10px;
+            margin: 10px;
+            font-size: 16px;
+            width: 300px;
+            border: none;
+            border-radius: 5px;
+            outline: none;
+            background-color: #fff; /* White */
+            color: #333; /* Dark grey text */
+        }
+
+        .text-box::placeholder {
+            color: #666; /* Light grey */
+        }
+
+        .text-space {
+            background-color: #fef8db;
+            margin-top: 1.5rem;
+            padding: 1rem;
+            margin-left: 2rem;
+            margin-right: 2rem;
+        }
+
+        #add-button, #submit-button {
+            padding: 10px;
+            font-size: 16px;
+            background-color: #ffd700; /* Gold */
+            color: #333; /* Dark grey text */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+            outline: none;
+        }
+
+        #add-button:hover, #submit-button:hover {
+            background-color: #f0c40e; /* Lighter gold on hover */
+        }
+    </style>
 </head>
 <body>
-<h1>Change Request Starter Summary and Description</h1>
+<div id="banner">EJ-CRaft</div>
+<div class="text-space">
+<h2>Change Request Starter</h2>
 <p><b>After reviewing, </b>Copy and Paste this line to your "Short Description" section
     on the Change Request Page.</p>
 <p th:text="'Short Description: ' + ${greeting.summary}" />
@@ -13,7 +89,8 @@
 <p><b>After reviewing, </b>Copy and Paste this line to your "Description" section
     on the Change Request Page.</p>
 <p th:text="'Description: ' + ${greeting.description}" />
+</div>
+<a href="/ejcraft">Submit another request</a>
 
-<a href="/ejcraft">Submit another message</a>
 </body>
 </html>
