@@ -5,6 +5,7 @@ import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -19,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 
 @Slf4j
 @Service
@@ -27,13 +29,17 @@ public class GetInfoService {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    @Qualifier("getJiraInfoExecutor")
+    private Executor getJiraInfoExecutor;
+
 
     public Map<String, List<String>> getInfo(List<String> jiraNumbers) {
         List<CompletableFuture<Map<String,List<String>>>> completableFutures = new ArrayList<>();
         Map<String, List<String>> res = new HashMap<>();
 
         for (String jiraNo : jiraNumbers) {
-            completableFutures.add(CompletableFuture.supplyAsync(() -> getSingleJiraInfo(jiraNo)).exceptionally(t -> {
+            completableFutures.add(CompletableFuture.supplyAsync(() -> getSingleJiraInfo(jiraNo), getJiraInfoExecutor).exceptionally(t -> {
                 log.error(t.getMessage());
                 return null;
             }

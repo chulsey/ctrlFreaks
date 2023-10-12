@@ -23,7 +23,7 @@ public class JiraReader {
 
     @GetMapping(value = "/info")
     public HttpEntity<Map<String, List<String>>> getInfo(@RequestBody List<String> jiraNumbers) {
-        log.info("HERERERE");
+
         if(CollectionUtils.isEmpty(jiraNumbers)){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new HashMap<String, List<String>>());
         }
