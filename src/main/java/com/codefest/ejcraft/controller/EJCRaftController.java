@@ -65,7 +65,7 @@ public class EJCRaftController implements ChangeRequestApi {
         openAIService.generateSummary(
             "Summarize these Jira"
                 + " descriptions in a way a non-technical person would understand "
-                + "into a single paragraph: "
+                + "into a single paragraph (without using the words Jira or description): "
                 + jiraDesc);
 
     ChangeRequest changeRequest = new ChangeRequest();
