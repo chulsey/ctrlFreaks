@@ -1,5 +1,6 @@
 package com.codefest.ejcraft.service;
 
+import com.codefest.ejcraft.api.model.ChangeRequest;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,18 +23,18 @@ public class PassJiraNumberService {
     @Value("${openai.start.changerequest.url}")
     private String openAiUrl;
 
-    public List<String> getChangeDoc(List<String> jiraNumbers) {
+    public String getChangeDoc(List<String> jiraNumbers) {
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 
         HttpEntity<Object> requestEntity = new HttpEntity<>(jiraNumbers, httpHeaders);
         List<String> jiraList = new ArrayList<>();
-        ResponseEntity<List<String>> response = restTemplate.exchange(openAiUrl, HttpMethod.POST, requestEntity, new ParameterizedTypeReference<List<String>>() {});
+        ResponseEntity<ChangeRequest> response = restTemplate.exchange(openAiUrl, HttpMethod.POST, requestEntity, new ParameterizedTypeReference<ChangeRequest>() {});
 
-        List<String> body = response.getBody();
+        ChangeRequest body = response.getBody();
 
-        return body;
+        return body.getSummary();
     }
 
 

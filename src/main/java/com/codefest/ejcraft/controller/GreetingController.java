@@ -30,9 +30,9 @@ public class GreetingController {
         List<String> jiraNumbers = new ArrayList<>();
         jiraNumbers.add(greeting.getContent());
 
-        List<String> resultList = passJiraNumberService.getChangeDoc(jiraNumbers);
+        String resultList = passJiraNumberService.getChangeDoc(jiraNumbers);
 
-        greeting.setResult(resultList.get(0));
+        greeting.setResult(resultList);
 
         model.addAttribute("greeting", greeting);
 
