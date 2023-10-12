@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -28,6 +29,12 @@ public class GetInfoService {
   @Autowired
   @Qualifier("getJiraInfoExecutor") private Executor getJiraInfoExecutor;
 
+  @Value("${jira.username}")
+  private String username;
+
+  @Value("${jira.authkey}")
+  private String authKey;
+
   public Map<String, List<String>> getInfo(List<String> jiraNumbers) {
     List<CompletableFuture<Map<String, List<String>>>> completableFutures = new ArrayList<>();
     Map<String, List<String>> res = new HashMap<>();
@@ -44,7 +51,7 @@ public class GetInfoService {
 
     for (CompletableFuture completableFuture : completableFutures) {
       Map<String, List<String>> singleRes = (Map<String, List<String>>) completableFuture.join();
-      if(!CollectionUtils.isEmpty(singleRes)) {
+      if (!CollectionUtils.isEmpty(singleRes)) {
         res.putAll(singleRes);
       }
     }
@@ -53,10 +60,7 @@ public class GetInfoService {
   }
 
   private Map<String, List<String>> getSingleJiraInfo(String jiraNumber) {
-    HttpHeaders httpHeaders =
-        createHeaders(
-            "zachary.frehner@gmail.com",
-            "ATATT3xFfGF0GuQRtAV3qV2oWB-v2xIn_nNR_IgGtNxlumrAqaLmWNMKImdxnwcLzHX4BG6r9QzLmwQ8DEvize2ah9-hPBCQzAwIOz8DMcbegyxUfDt_2kDHpn47yb2sHXlkAqZeV370oPzGS7OZJ2QxFQPd9w19UFGHxF2xngFAtpPAbjkiTsM=99C668CE");
+    HttpHeaders httpHeaders = createHeaders(username, authKey);
     HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);
 
     String url = "https://codeFest23.atlassian.net/rest/api/2/issue/" + jiraNumber;

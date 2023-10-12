@@ -2,73 +2,76 @@ package com.codefest.ejcraft.controller;
 
 import com.codefest.ejcraft.api.ChangeRequestApi;
 import com.codefest.ejcraft.api.model.ChangeRequest;
-import com.codefest.ejcraft.models.ChatRequest;
-import com.codefest.ejcraft.models.ChatResponse;
 import com.codefest.ejcraft.service.GetInfoService;
+import com.codefest.ejcraft.service.OpenAIService;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
 @RestController
 public class EJCRaftController implements ChangeRequestApi {
 
-  @Qualifier("openaiRestTemplate") @Autowired
-  private RestTemplate restTemplate;
-
-  @Value("${openai.model}")
-  private String model;
-
-  @Value("${openai.api.url}")
-  private String apiUrl;
-
   @Autowired private GetInfoService getInfoService;
+
+  @Autowired private OpenAIService openAIService;
 
   @Override
   public ResponseEntity<ChangeRequest> startChangeRequest(List<String> requestBody) {
-    // TODO: Get Info from Jira
+    // Get Info from Jira
     // get Jira number from front end requestBody
     if (CollectionUtils.isEmpty(requestBody)) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ChangeRequest());
+      throw new RuntimeException("Bad Request no input from user");
     }
     Map<String, List<String>> body = getInfoService.getInfo(requestBody);
 
+    System.out.println("******** RESPONSE FROM JIRA API ********");
     System.out.println(body.toString());
 
-    // TODO: Call ChatGPT
+    // getting Jira titles and numbers
+    System.out.println(body.keySet());
+    Set<String> keySet = body.keySet();
+
+    StringBuilder jiraTitles = new StringBuilder();
+    StringBuilder jiraDesc = new StringBuilder();
+
+    for (String key : keySet) {
+      System.out.println(key);
+      System.out.println(body.get(key).get(0)); // 0 is the title of the Jira's
+      jiraTitles.append(body.get(key).get(0)).append(", ");
+      jiraDesc.append(body.get(key).get(1)).append(": ");
+    }
+    System.out.println("***** JIRA TITLES *****");
+    System.out.println(jiraTitles);
+
+    // Call ChatGPT
     // use output of summary and description to send to ChatGPT to generate summary
-    //generateSummary("Summarize this information: " + body.toString());
+    String openAISummaryResponse =
+        openAIService.generateSummary(
+            "Summarize these Jira titles"
+                + "in a way that a non-technical person would understand for a release explanation"
+                + "in a single sentence "
+                + jiraTitles);
+
+    // Call CHAT GPT to generate a summary of all the Jira descriptions
+    System.out.println("***** JIRA DESCRIPTIONS *****");
+    System.out.println(jiraDesc);
+
+    String openAIDescResponse =
+        openAIService.generateSummary(
+            "Summarize these Jira"
+                + " descriptions in a way a non-technical person would understand "
+                + "into a single paragraph: "
+                + jiraDesc);
 
     ChangeRequest changeRequest = new ChangeRequest();
+    changeRequest.setSummary(openAISummaryResponse);
+    changeRequest.setDescription(openAIDescResponse);
 
-    // TODO: Replace with data from ChatGPT
-    changeRequest.setSummary("Stuff");
-    changeRequest.setDescription("More stuff");
-
-    return ResponseEntity.ok(changeRequest);
-  }
-
-  @GetMapping("/chat")
-  public String generateSummary(@RequestParam String prompt) {
-    // create a request
-    ChatRequest request = new ChatRequest(model, prompt);
-
-    // call the API
-    ChatResponse response = restTemplate.postForObject(apiUrl, request, ChatResponse.class);
-
-    if (response == null || response.getChoices() == null || response.getChoices().isEmpty()) {
-      return "No response";
-    }
-
-    // return the first response
-    return response.getChoices().get(0).getMessage().getContent();
+    return ResponseEntity.status(HttpStatus.OK).body(changeRequest);
   }
 }
