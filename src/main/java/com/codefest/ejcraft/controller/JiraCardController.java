@@ -14,10 +14,10 @@ public class JiraCardController {
     public String input() { return "input"; }
 
     @PostMapping("/submit")
-    public List<String> getJiraTicketList() {
+    public String getJiraTicketList() {
         List<String> jiraList = new ArrayList<>();
 
-        return jiraList;
+        return "results";
     }
 
 }

@@ -60,17 +60,16 @@
         }
     </style>
 </head>
-
 <body>
+<div id="banner">EJCraft</div>
+<div id="text-box-container">
+    <input type="text" class="text-box" placeholder="Enter Jira Story Id..."/>
+    <button id="add-button" onclick="addTextBox()">Add new</button>
+</div>
+<form action="results.html" method="post">
+    <button id="submit-button" type="submit">Submit</button>
+</form>
 
-    <div id="banner">EJCraft</div>
-    <div id="text-box-container">
-        <input type="text" class="text-box" placeholder="Enter Jira Story Id...">
-        <button id="add-button" onclick="addTextBox()">Add new</button>
-    </div>
-    <form action="submit" method="post">
-        <button id="submit-button">Submit</button>
-    </form>
 <script>
     function addTextBox() {
         const textBoxContainer = document.getElementById('text-box-container');
@@ -82,5 +81,4 @@
     }
 </script>
 </body>
-
 </html>
