@@ -71,9 +71,13 @@
 </form>
 
 <script>
-    function addTextBox() {
+    var count = 0;
+    function addTextBox(count) {
+
         const textBoxContainer = document.getElementById('text-box-container');
+        // const newTextBox = document.createElement('input-' + count++);
         const newTextBox = document.createElement('input');
+        newTextBox.setAttribute("id", "jira-number" + count++);
         newTextBox.type = 'text';
         newTextBox.className = 'text-box';
         newTextBox.placeholder = 'Enter Jira Story Id...';

@@ -1,0 +1,69 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #333; /* Dark sheet-metal grey */
+        color: #fff; /* White text */
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+    }
+
+    #banner {
+        font-size: 2.5em;
+        font-weight: bold;
+        color: #ffd700; /* Gold */
+        text-shadow: 2px 2px 2px #000; /* Text shadow effect */
+        margin-bottom: 20px;
+    }
+
+    .text-box {
+        padding: 10px;
+        margin: 10px;
+        font-size: 16px;
+        width: 300px;
+        border: none;
+        border-radius: 5px;
+        outline: none;
+        background-color: #fff; /* White */
+        color: #333; /* Dark grey text */
+    }
+
+    .text-box::placeholder {
+        color: #666; /* Light grey */
+    }
+
+    #add-button, #submit-button {
+        padding: 10px;
+        font-size: 16px;
+        background-color: #ffd700; /* Gold */
+        color: #333; /* Dark grey text */
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin: 10px;
+        outline: none;
+    }
+
+    #add-button:hover, #submit-button:hover {
+        background-color: #f0c40e; /* Lighter gold on hover */
+    }
+</style>
+<head>
+    <title>EJCraft: Change Request Automation</title>
+    <meta http-equiv="Content-Type" content="text/html" charset="ISO-8859-1" />
+</head>
+<body>
+<div id="banner">EJCraft</div>
+<form action="#" th:action="@{/ejcraft}" th:object="${greeting}" method="post">
+    <p><input type="text" class="text-box" placeholder="Enter Jira Story Id..." th:field="*{content}" /></p>
+    <p><input type="submit" value="Submit" id="add-button"/> <input type="reset" value="Reset" /></p>
+</form>
+</body>
+</html>

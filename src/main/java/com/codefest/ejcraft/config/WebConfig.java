@@ -52,7 +52,8 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/").setViewName("input");
+//        registry.addViewController("/").setViewName("input");
+        registry.addViewController("/").setViewName("ejcraft");
     }
 
 }
