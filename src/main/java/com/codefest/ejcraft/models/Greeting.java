@@ -1,29 +1,16 @@
 package com.codefest.ejcraft.models;
 
 import java.io.Serializable;
+import lombok.Getter;
+import lombok.Setter;
 
-/*
-Lombok getter setter not working with jdk 21, using old-fashioned getter and setter for now
- */
+@Getter
+@Setter
 public class Greeting implements Serializable {
 
   private String content;
 
-  public String getResult() {
-    return result;
-  }
+  private String summary;
 
-  public void setResult(String result) {
-    this.result = result;
-  }
-
-  private String result;
-
-  public String getContent() {
-    return content;
-  }
-
-  public void setContent(String content) {
-    this.content = content;
-  }
+  private String description;
 }

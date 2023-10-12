@@ -1,9 +1,10 @@
 package com.codefest.ejcraft.service;
 
+import static com.codefest.ejcraft.constants.EJCraftConstant.DESCRIPTION;
+import static com.codefest.ejcraft.constants.EJCraftConstant.SUMMARY;
+
 import com.codefest.ejcraft.api.model.ChangeRequest;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
@@ -19,7 +20,7 @@ public class PassJiraNumberService {
   @Value("${openai.start.changerequest.url}")
   private String openAiUrl;
 
-  public String getChangeDoc(List<String> jiraNumbers) {
+  public Map<String, String> getChangeDoc(List<String> jiraNumbers) {
 
     HttpHeaders httpHeaders = new HttpHeaders();
     httpHeaders.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
@@ -34,7 +35,10 @@ public class PassJiraNumberService {
             new ParameterizedTypeReference<ChangeRequest>() {});
 
     ChangeRequest body = response.getBody();
+    Map<String, String> summaryAndDesc = new HashMap<>();
+    summaryAndDesc.put(SUMMARY, body.getSummary());
+    summaryAndDesc.put(DESCRIPTION, body.getDescription());
 
-    return body.getSummary();
+    return summaryAndDesc;
   }
 }

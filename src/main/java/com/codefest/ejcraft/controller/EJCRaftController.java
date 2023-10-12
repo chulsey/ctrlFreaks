@@ -29,7 +29,7 @@ public class EJCRaftController implements ChangeRequestApi {
     }
     Map<String, List<String>> body = getInfoService.getInfo(requestBody);
 
-    //split up Jira response into summary and description
+    // split up Jira response into summary and description
     Set<String> keySet = body.keySet();
     StringBuilder jiraTitles = new StringBuilder();
     StringBuilder jiraDesc = new StringBuilder();

@@ -34,9 +34,6 @@ public class OpenAIService {
     if (response == null || response.getChoices() == null || response.getChoices().isEmpty()) {
       return "No response";
     }
-
-    System.out.println("**********CHAT GPT RESPONSE ***********");
-    System.out.println(response.getChoices().get(0).getMessage().getContent());
     // return the first response
     return response.getChoices().get(0).getMessage().getContent();
   }
