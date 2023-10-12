@@ -46,7 +46,6 @@ public class WebConfig implements WebMvcConfigurer {
 
         viewResolver.setTemplateEngine(templateEngine());
         viewResolver.setCharacterEncoding("UTF-8");
-        System.err.println(viewResolver.getViewNames());
 
         return viewResolver;
     }

@@ -63,10 +63,10 @@
 <body>
 <div id="banner">EJCraft</div>
 <div id="text-box-container">
-    <input type="text" class="text-box" placeholder="Enter Jira Story Id..."/>
+    <input type="text" class="text-box" placeholder="Enter Jira Story Id..." />
     <button id="add-button" onclick="addTextBox()">Add new</button>
 </div>
-<form action="results.html" method="post">
+<form action="#" th:action="@{/results}" method="post">
     <button id="submit-button" type="submit">Submit</button>
 </form>
 
