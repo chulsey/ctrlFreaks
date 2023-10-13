@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ctrlfreaks-deployment
+  labels:
+    app: ctrlfreaks
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: ctrlfreaks
+  template:
+    metadata:
+      labels:
+        app: ctrlfreaks
+    spec:
+      containers:
+      - name: ctrlfreaks
+        image: ghcr.io/chulsey/ctrlfreaks:0.2.0
+        env:
+        - name: jira_username
+          valueFrom:
+            secretKeyRef:
+              name: jira-key
+              key: jira.username
+        - name: jira_authkey
+          valueFrom:
+            secretKeyRef:
+              name: jira-key
+              key: jira.pass
+        - name: openai_api_key
+          valueFrom:
+            secretKeyRef:
+              name: openai-key
+              key: openai.key
+        ports:
+        - containerPort: 80
+      imagePullSecrets:
+      - name: pullsecret

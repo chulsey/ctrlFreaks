@@ -5,13 +5,27 @@ plugins {
     id 'com.diffplug.spotless' version '6.22.0'
     id 'org.openapi.generator' version '7.0.0'
     id 'io.freefair.lombok' version '8.4'
+    id "com.palantir.docker" version '0.35.0'
+    id "com.palantir.docker-run" version '0.35.0'
 }
 
 group = 'com.codefest'
-version = '0.0.1-SNAPSHOT'
+version = '0.2.0'
 
 java {
     sourceCompatibility = '21'
+}
+
+docker {
+    name "ghcr.io/chulsey/${project.name}:${project.version}"
+    files 'build/libs/app.jar'
+}
+
+dockerRun {
+    name "${project.name}"
+    image "ghcr.io/chulsey/${project.name}:${project.version}"
+    ports '8080:8080'
+    clean true
 }
 
 configurations {
@@ -30,6 +44,10 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+}
+
+bootJar {
+    archiveFileName = 'app.jar'
 }
 
 tasks.named('test') {
