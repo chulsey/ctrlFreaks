@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.thymeleaf.util.StringUtils;
 
 @Controller
 public class GreetingController {
@@ -31,25 +32,30 @@ public class GreetingController {
 
     List<String> jiraNumbers = new ArrayList<>();
 
-    if (greeting == null) {
-      throw new RuntimeException("BAD REQUEST");
+    if (greeting == null || StringUtils.isEmpty(greeting.getContent())) {
+      //      throw new RuntimeException("BAD REQUEST");
+      return "error";
     }
 
     String input = greeting.getContent();
-    if (input.contains(",")) {
-      String[] inputs = input.split(",");
-      for (String str : inputs) {
-        jiraNumbers.add(str);
+    try {
+      if (input.contains(",")) {
+        String[] inputs = input.split(",");
+        for (String str : inputs) {
+          jiraNumbers.add(str);
+        }
+      } else {
+        jiraNumbers.add(input);
       }
-    } else {
-      jiraNumbers.add(input);
-    }
+
 
     Map<String, String> resultMap = passJiraNumberService.getChangeDoc(jiraNumbers);
 
     greeting.setSummary(resultMap.get(SUMMARY));
     greeting.setDescription(resultMap.get(DESCRIPTION));
-
+    } catch (Throwable t) {
+      return "error";
+    }
     model.addAttribute("greeting", greeting);
 
     return "hello";
