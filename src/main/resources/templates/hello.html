@@ -3,17 +3,169 @@
 <head>
     <title>EJ-CRaft</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <script>
+        function copyToClipboard(id) {
+            // Get the input element
+            var inputElement = document.getElementById(id);
+
+            // Select the text in the input element
+            inputElement.select();
+            inputElement.setSelectionRange(0, 99999); // For mobile devices
+
+            try {
+                // Use the Clipboard API to copy text to clipboard
+                navigator.clipboard.writeText(inputElement.value);
+                showTooltip(id)
+            } catch (err) {
+                // Fallback for browsers that do not support the Clipboard API
+                console.error('Unable to copy to clipboard:', err);
+            }
+        }
+
+        function showTooltip(id) {
+            var tooltip = document.getElementById(id + "tooltip");
+            tooltip.style.display = 'block';
+            // Hide the tooltip after 5 seconds
+            setTimeout(function() {
+                tooltip.style.display = 'none';
+            }, 2000);  // 2000 milliseconds (2 seconds)
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #333; /* Dark sheet-metal grey */
+            color: black;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-image: linear-gradient(to right, #333 , black);
+        }
+
+        #banner {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #ffd700; /* Gold */
+            text-shadow: 2px 2px 2px #000; /* Text shadow effect */
+            margin-bottom: 10px;
+        }
+
+        a {
+            color: #ffd700; /* Gold */
+        }
+
+        h2 {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: black;
+            margin-bottom: 20px;
+        }
+
+        .text-box {
+            padding: 10px;
+            margin: 10px;
+            font-size: 16px;
+            width: 300px;
+            border: none;
+            border-radius: 5px;
+            outline: none;
+            background-color: #fff; /* White */
+            color: #333; /* Dark grey text */
+        }
+
+        .text-box::placeholder {
+            color: #666; /* Light grey */
+        }
+
+        .text-space {
+            background-color: #333;
+            margin-top: 1.5rem;
+            padding: 1rem;
+            margin-left: 2rem;
+            margin-right: 2rem;
+            color: #ccc;
+        }
+
+        #add-button, #submit-button {
+            padding: 10px;
+            font-size: 16px;
+            background-color: #ffd700; /* Gold */
+            color: #333; /* Dark grey text */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+            outline: none;
+        }
+
+        #add-button:hover, #submit-button:hover {
+            background-color: #f0c40e; /* Lighter gold on hover */
+        }
+
+        textarea {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            resize: none; /* Disable textarea resizing */
+            font-size: 14px;
+            line-height: 1.5;
+            height: 5rem;
+        }
+        .copy-button {
+            padding: 10px 12px;
+            background-color: #ffd700;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-left: 10px;
+        }
+
+        .tooltip {
+            display: none;
+            position: absolute;
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 <body>
-<h1>Change Request Starter Summary and Description</h1>
+<div id="banner">EJ-CRaft</div>
+<div class="text-space">
 <p><b>After reviewing, </b>Copy and Paste this line to your "Short Description" section
     on the Change Request Page.</p>
-<p th:text="'Short Description: ' + ${greeting.summary}" />
+    <h4>*Short Description</h4>
+<textarea th:text="${greeting.summary}"  id="summary"/>
+
+    <!-- Tooltip element -->
+    <div id="summarytooltip" class="tooltip">Copied!</div>
+
+    <!-- Button to copy text to clipboard -->
+    <button onclick="copyToClipboard('summary')" class="copy-button">Copy</button>
 
 <p><b>After reviewing, </b>Copy and Paste this line to your "Description" section
     on the Change Request Page.</p>
-<p th:text="'Description: ' + ${greeting.description}" />
+    <h4>*Description</h4>
+<textarea th:text="${greeting.description}" id="description"/>
 
-<a href="/ejcraft">Submit another message</a>
+    <!-- Tooltip element -->
+    <div id="descriptiontooltip" class="tooltip">Copied!</div>
+
+    <!-- Button to copy text to clipboard -->
+    <button onclick="copyToClipboard('description')" class="copy-button">Copy</button>
+</div>
+<a href="/ejcraft">Submit another request</a>
+
 </body>
 </html>
