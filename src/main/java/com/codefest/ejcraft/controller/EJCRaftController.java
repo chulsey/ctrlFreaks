@@ -43,18 +43,17 @@ public class EJCRaftController implements ChangeRequestApi {
     // use output of summary and description to send to ChatGPT to generate summary
     String openAISummaryResponse =
         openAIService.generateSummary(
-            "Summarize these Jira titles"
-                + "in a way that a five year old would understand for a release explanation"
-                + "in a single sentence "
+            "You are a software engineer,Summarize these Jira titles"
+                + "in a way that a non-technical 15 year old would understand for a release explanation"
+                + "in a single sentence: "
                 + jiraTitles);
 
     // Call CHAT GPT to generate a summary of all the Jira descriptions
     String openAIDescResponse =
         openAIService.generateSummary(
-            "Summarize these Jira"
-                + " descriptions in a way a 5 year old would understand "
-                + "into a single paragraph (without using the words Jira, description, " +
-                    "and 'as a customer'): "
+            "You are a software engineer creating a release ticket, take these completed feature"
+                + " descriptions and create a single description that a non-technical 15 year old would understand "
+                + "into a single paragraph: "
                 + jiraDesc);
 
     ChangeRequest changeRequest = new ChangeRequest();
